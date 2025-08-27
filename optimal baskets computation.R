@@ -78,7 +78,7 @@ size = 1/step + 1
 ### Let us define an optimization function that loops over all possible baskets for each pair of parameters and chooses for each the one maximizing utility.
 
 # Utility Function Definition
-#theta is a 'mute' variable only used for algotirhmic purposes 
+#theta is a 'mute' variable only used for algorithmic purposes 
 
 utility_function <- function(x1, x2, x3, x4, alpha, beta, gamma, d_prime, theta) {
   u_cons <- log(x1 + x2 + x3 + x4 + .Machine$double.eps)
@@ -520,7 +520,7 @@ generate_heatmap <- function(share, lifestyle, color_palette, legend_title, add_
     
     # Plot the heatmap with the reversed matrix using image
     image(1:ncol(share_reversed), 1:nrow(share_reversed), t(share_reversed), col = color_palette, axes = FALSE, 
-          main = paste("% of income spent in", lifestyle, "- BP excluded / High damage"), 
+          main = paste("% of income spent in", lifestyle, "- High damage baseline"), 
           xlab = "alpha", ylab = "beta", xlim = c(1, max_dim), ylim = c(1, max_dim), asp = 1)
     
     # Add axis labels
@@ -610,7 +610,7 @@ plot <- ggplot(data, aes(x = Category, y = Percentage, fill = Category)) +
             position = position_stack(vjust = 0.5), 
             color = "black", 
             size = 5) +  # Adjust the size if needed
-  labs(title = "Market shares in volume - GP excluded from the market, High damage baseline, Uniform distribution of the population",
+  labs(title = "Market shares in volume - Environmental tax, High damage, Uniform distribution of the population",
        x = "Lifestyles (from the most to the least polluting)",
        y = "Percentage of quantities consumed") +
   scale_y_continuous(labels = scales::percent_format(scale = 1), limits = c(0, 100)) +  # Format y-axis as percentage and normalize the scale
@@ -1029,6 +1029,7 @@ data <- data.frame(Category = factor(consumer_types, levels = c("BP", "BD", "GP"
 # Set colors
 custom_colors <- c("brown", "lightgrey", "darkgreen", "lightgreen") 
 
+
 # Create a bar plot (caption to be changed according to the case tested)
 plot <- ggplot(data, aes(x = Category, y = Percentage, fill = Category)) +
   geom_bar(stat = "identity") +
@@ -1036,7 +1037,7 @@ plot <- ggplot(data, aes(x = Category, y = Percentage, fill = Category)) +
             position = position_stack(vjust = 0.5), 
             color = "black", 
             size = 5) +  # Adjust the size if needed
-  labs(title = "Market shares in volume - High environmental concern, Low image concern - Higher income (R=24), Low damage",
+  labs(title = "Market shares in volume - High environmental concern, Low image concern - Environmental tax, low damage",
        x = "Lifestyles (from the most to the least polluting)",
        y = "Percentage of quantities consumed") +
   scale_y_continuous(labels = scales::percent_format(scale = 1), limits = c(0, 100)) +  # Format y-axis as percentage and normalize the scale
@@ -1044,6 +1045,31 @@ plot <- ggplot(data, aes(x = Category, y = Percentage, fill = Category)) +
   scale_fill_manual(values = custom_colors, guide="none")
 
 print(plot)
+
+
+### For Figure 4, we finally rather plot those market shares into pie charts.
+
+plot <- ggplot(data, aes(x = "", y = Percentage, fill = Category)) +
+  geom_bar(width = 1, stat = "identity", color = "white") +
+  coord_polar(theta = "y") +
+  theme_void() +  # removes axes and background
+  scale_fill_manual(values = custom_colors, guide = "none")
+
+print(plot)
+
+## Successively store the pie charts into corresponding scenario
+#plot -> plot_A
+#plot -> plot_B
+#plot -> plot_C
+#plot -> plot_D
+#plot -> plot_E
+#plot -> plot_F
+#plot -> plot_G
+#plot -> plot_H
+#plot -> plot_I
+
+
+
 
 
 ## Let's finally compute the associated per capita impacts.
@@ -2277,7 +2303,7 @@ scatter_plot <- ggplot(data_long, aes(x = Scenario, y = Impact, color = Impact, 
 print(scatter_plot)
 
 
-# Load heatmap images (agin the order is that of the  low damage baseline)
+# Load heatmap images (again the order is that of the  low damage baseline)
 
 # Create heatmap plots for each scenario
 heatmap_plots <- list()
@@ -2304,9 +2330,15 @@ final_plot <- scatter_plot / heatmap_grid + plot_layout(heights = c(1, 0.5))
 print(final_plot)
 
 
+#Add the pie charts (for Figure 4), ranked manually for simplicity
+library(patchwork)
+(plot_D | plot_A | plot_G| plot_H | plot_E | plot_B | plot_I | plot_F | plot_C)
 
 
-##Same for high damage levels
+
+
+
+###Same for high damage levels (without the pie charts)
 
 # Define scenarios
 scenarios <- c("A", "B", "C", "D", "E", "F", "G", "H", "I")
