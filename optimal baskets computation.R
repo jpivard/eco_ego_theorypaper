@@ -59,7 +59,7 @@ p_bp = 1.9
 p_bd = 1
 p <- c(p_gp,p_gd,p_bp,p_bd)
 
-d_prime = 0.1
+d_prime = 0.3
 gammaGP = 0.15
 gammaGD = 0.05
 gammaBD = 0.2
@@ -715,30 +715,36 @@ breaks <- seq(min_val, max_val, length.out = num_colors + 1)
 # Create a named vector associating each unique value in the matrix with a color
 color_map <- cut(P, breaks = breaks, include.lowest = TRUE, labels = color_palette)
 
-# Adjust plot margins using par() function before creating the heatmap
-# Increase the bottom margin to make space for the x-axis label
-par(mar = c(5,6,6,7))  # c(bottom, left, top, right) - increase the bottom margin
+# Adjust margins 
+par(mar = c(4, 4, 4, 4))  
 
 # Create the heatmap
 heatmap(P, scale = "none", Rowv = NA, Colv = NA,
         col = color_palette,
-        main = "Env. impacts of a potential consumer - GP excluded from the market, High damage baseline",
+        main = "Env. impacts of potential consumer - High-damage baseline, Assumption 4B.",
         cexRow = 0.7, cexCol = 0.7,
         ylab = expression(beta))
 
 # Add the x-axis label after creating the heatmap
-mtext(expression(alpha), side = 1, line = 3, las = 1)  # Adjust 'line' parameter to position the label properly
+mtext(expression(alpha), side = 1, line = 2.5)  # Adjust 'line' parameter to position the label properly
 
 #Optional: Add the y-axis label (only when hidden by the panel)
 #mtext(expression(beta), side = 2, line = 3, las = 1)
 
-# Create the legend
-legend_labels <- seq(min_val, max_val, length.out = 10)
-legend_colors <- colorRampPalette(c("darkgreen", "lightgreen", "yellow", "orange", "red", "brown"))(10)
-legend("right", inset = c(-0.1, 0), legend = round(legend_labels, 2), fill = legend_colors,
-       title = "Impact units/pixel",  # Add a title to the legend
-       cex = 0.7, pt.cex = 1,  # Adjust cex and pt.cex as needed
-       y.intersp = 1.5, xpd = NA)  # Allow plotting outside the plot region and adjust spacing between legend items
+# Legend: closer, bigger, integer labels
+legend_labels <- seq(min_val, max_val, length.out = 8)
+legend_labels <- round(legend_labels, 0)  # integers
+legend_colors <- colorRampPalette(c("darkgreen", "lightgreen", "yellow", "orange", "red", "brown"))(length(legend_labels))
+
+legend("right", inset = c(-0.02, 0),   
+       legend = legend_labels, 
+       fill = legend_colors,
+       title = "Impact units/pixel",
+       cex = 1.2,   
+       pt.cex = 1.2, 
+       y.intersp = 1.2,
+       xpd = NA)
+
 
 
 
