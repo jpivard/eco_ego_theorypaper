@@ -1,5 +1,7 @@
 Repository containing simulation data for the paper "Reconciling Eco and Ego? The interplay between environmental and image concerns in consumption choices"
 
+Note that the code dates back to a previous version of the model where goods were named GP,GD,BP and BD instead of respectively GC,GO,BC and BO. Additional figures were also created at that point. In any case, all the code needed to duplicate the current paper's figures is included.
+
 Abstract: 
 We explore the interplay between two key drivers of individual green consumption: environmental preferences and social image concerns, when both conspicuous goods and green goods contribute to social image. We consider four stylized lifestyles crossing two characteristics (Green/Brown) x (Conspicuous/Ordinary), all differing in environmental impacts and status benefits.
 Our model generates two key predictions. 
